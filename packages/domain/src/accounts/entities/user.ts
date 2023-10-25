@@ -1,7 +1,7 @@
 import { Entity } from "../../core";
-import { Guid } from "../../core/value-objects";
+import type { Guid } from "../../core/value-objects";
 
-type UserProps = {
+interface UserProps {
   name: string;
   email: string;
   password: string;
