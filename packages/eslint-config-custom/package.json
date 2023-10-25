@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "private": true,
   "devDependencies": {
+    "@rehem-packages/eslint-config": "^1.2.0",
     "@vercel/style-guide": "^5.0.0",
     "eslint-config-turbo": "^1.10.12",
     "typescript": "^4.5.3"
