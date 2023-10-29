@@ -1,11 +1,18 @@
-import { Button } from "ui";
-
+import { RouterProvider } from "react-router-dom";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "sonner";
+import { router } from "./routes/router";
+import { queryClient } from "./lib/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 function App() {
   return (
-    <>
-      <h1 className="text-red-600">Stock-Wizard</h1>
-      <Button>click me</Button>
-    </>
+    <QueryClientProvider client={queryClient}>
+      <Toaster richColors closeButton position="bottom-center" />
+      <RouterProvider router={router} />
+      {import.meta.env.MODE === "development" && (
+        <ReactQueryDevtools initialIsOpen={false} />
+      )}
+    </QueryClientProvider>
   );
 }
 
