@@ -5,13 +5,13 @@ import { Settings } from "@/features/misc/routes/settings";
 import { PantryRoutes } from "@/features/pantry/routes";
 import { Navigate, redirect } from "react-router-dom";
 
-const isAuthenticated = authStore.getState().isAuthenticated;
-
 export const protectedRoutes = [
   {
     path: "/app",
     element: <RouteLayout />,
     loader() {
+      const isAuthenticated = authStore.getState().isAuthenticated;
+
       if (!isAuthenticated) {
         return redirect("/login");
       }

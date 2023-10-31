@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import { LoginProps, User, login } from "../api/login";
+import { User } from "../api/types";
 
 type State = {
   isAuthenticated: boolean;
@@ -8,8 +8,8 @@ type State = {
 };
 
 type Action = {
-  login: (props: LoginProps) => Promise<void>;
-  logout: () => Promise<void>;
+  setUser: (user: User) => void;
+  removeUser: () => void;
 };
 
 type AuthStore = State & Action;
@@ -19,11 +19,10 @@ export const authStore = create(
     (set) => ({
       isAuthenticated: false,
       user: null,
-      login: async (props) => {
-        const user = await login(props);
+      setUser(user) {
         set({ isAuthenticated: true, user });
       },
-      logout: async () => {
+      removeUser() {
         set({ isAuthenticated: false, user: null });
       },
     }),
@@ -34,7 +33,7 @@ export const authStore = create(
   ),
 );
 
-export const useAuth = <T>(selector: (state: AuthStore) => T): T => {
+export const useAuthStore = <T>(selector: (state: AuthStore) => T): T => {
   const state = authStore.getState();
   return selector(state);
 };

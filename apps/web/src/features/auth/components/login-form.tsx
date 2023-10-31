@@ -2,26 +2,31 @@ import React from "react";
 import { toast } from "sonner";
 import { FormLayout } from "./form-layout";
 import { Button, Icons, Input, Label } from "ui";
-import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../stores/auth";
+import { Link } from "react-router-dom";
+import { useLogin } from "../api/login";
 
 interface LoginFormProps { }
 
 export function LoginForm(_props: LoginFormProps) {
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const navigate = useNavigate();
-  const login = useAuth((state) => state.login);
+  const loginMutation = useLogin({
+    config: {
+      onError() {
+        toast.error("Invalid credentials");
+      },
+    },
+  });
 
   async function onSubmit(event: React.SyntheticEvent) {
     const formData = new FormData(event.currentTarget as HTMLFormElement);
     const email = formData.get("email")?.toString() as string;
     event.preventDefault();
-    setIsLoading(true);
+
     try {
-      await login({ email, password: "password" });
-      navigate("/app");
+      await loginMutation.mutateAsync({
+        email,
+        password: "",
+      });
     } catch (error) {
-      setIsLoading(false);
       console.log("🚀 ~ file: login-form.tsx:22 ~ onSubmit ~ error:", error);
       toast.error("Invalid credentials");
     }
@@ -50,7 +55,7 @@ export function LoginForm(_props: LoginFormProps) {
                 autoCapitalize="none"
                 autoComplete="email"
                 autoCorrect="off"
-                disabled={isLoading}
+                disabled={loginMutation.isPending}
               />
             </div>
             <div className="grid gap-1">
@@ -63,11 +68,11 @@ export function LoginForm(_props: LoginFormProps) {
                 placeholder="Password"
                 type="password"
                 autoComplete="current-password"
-                disabled={isLoading}
+                disabled={loginMutation.isPending}
               />
             </div>
-            <Button disabled={isLoading}>
-              {isLoading && (
+            <Button disabled={loginMutation.isPending}>
+              {loginMutation.isPending && (
                 <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
               )}
               Sign In with Email
@@ -93,9 +98,9 @@ export function LoginForm(_props: LoginFormProps) {
         <FormLayout.SocialButton
           variant="outline"
           type="button"
-          disabled={isLoading}
+          disabled={loginMutation.isPending}
         >
-          {isLoading ? (
+          {loginMutation.isPending ? (
             <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
           ) : (
             <Icons.gitHub className="mr-2 h-4 w-4" />
