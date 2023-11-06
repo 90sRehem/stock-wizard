@@ -32,7 +32,7 @@ export const columns: ColumnDef<Task>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Task" />
     ),
-    cell: ({ row }) => <div className="w-[80px]">{row.getValue("id")}</div>,
+    cell: ({ row }) => <div className="w-full">{row.getValue("id")}</div>,
     enableSorting: false,
     enableHiding: false,
   },
@@ -45,8 +45,12 @@ export const columns: ColumnDef<Task>[] = [
       const label = labels.find((label) => label.value === row.original.label);
 
       return (
-        <div className="flex space-x-2">
-          {label && <Badge variant="outline">{label.label}</Badge>}
+        <div className="flex space-x-2 items-center">
+          {label && (
+            <Badge variant="outline" className="border-zinc-500">
+              {label.label}
+            </Badge>
+          )}
           <span className="max-w-[500px] truncate font-medium">
             {row.getValue("title")}
           </span>
@@ -106,6 +110,29 @@ export const columns: ColumnDef<Task>[] = [
     },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
+    },
+  },
+  {
+    id: "createdAt",
+    accessorKey: "createdAt",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Created At" />
+    ),
+    cell: ({ row }) => {
+      const date = new Date(row.getValue("createdAt"));
+      const formattedDate = date.toLocaleDateString("pt-BR", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+
+      return (
+        <div className="flex items-center">
+          <span>{formattedDate}</span>
+        </div>
+      );
     },
   },
   {

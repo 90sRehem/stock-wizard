@@ -1,11 +1,12 @@
 import { MutationConfig } from "@/lib";
 import { api } from "@/lib/wretch";
 import { useMutation } from "@tanstack/react-query";
-import { useAuthStore } from "..";
+import { authStore, useAuthStore } from "..";
 import { useNavigate } from "react-router-dom";
 import { Credentials, User } from "./types";
 
 export async function login({ email }: Credentials): Promise<User> {
+  const setUser = authStore.getState().setUser;
   const user = await api.get(`/users?email=${email}`).res<User[]>((res) => {
     return res.json();
   });
@@ -14,6 +15,7 @@ export async function login({ email }: Credentials): Promise<User> {
     throw new Error("User not found");
   }
 
+  setUser(user[0]);
   return user[0];
 }
 

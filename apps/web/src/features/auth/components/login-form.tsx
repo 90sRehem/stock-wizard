@@ -2,35 +2,13 @@ import React from "react";
 import { toast } from "sonner";
 import { FormLayout } from "./form-layout";
 import { Button, Icons, Input, Label } from "ui";
-import { Link } from "react-router-dom";
-import { useLogin } from "../api/login";
+import { Form, Link, useNavigation } from "react-router-dom";
 
 interface LoginFormProps { }
 
 export function LoginForm(_props: LoginFormProps) {
-  const loginMutation = useLogin({
-    config: {
-      onError() {
-        toast.error("Invalid credentials");
-      },
-    },
-  });
-
-  async function onSubmit(event: React.SyntheticEvent) {
-    const formData = new FormData(event.currentTarget as HTMLFormElement);
-    const email = formData.get("email")?.toString() as string;
-    event.preventDefault();
-
-    try {
-      await loginMutation.mutateAsync({
-        email,
-        password: "",
-      });
-    } catch (error) {
-      console.log("🚀 ~ file: login-form.tsx:22 ~ onSubmit ~ error:", error);
-      toast.error("Invalid credentials");
-    }
-  }
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state === "submitting";
 
   return (
     <FormLayout>
@@ -41,7 +19,7 @@ export function LoginForm(_props: LoginFormProps) {
             Enter your email below to access your account{" "}
           </FormLayout.Subtitle>
         </FormLayout.Headings>
-        <form onSubmit={onSubmit}>
+        <Form id="login" method="post" replace>
           <div className="grid gap-2">
             <div className="grid gap-1">
               <Label className="sr-only" htmlFor="email">
@@ -55,7 +33,8 @@ export function LoginForm(_props: LoginFormProps) {
                 autoCapitalize="none"
                 autoComplete="email"
                 autoCorrect="off"
-                disabled={loginMutation.isPending}
+                disabled={isSubmitting}
+                title="Please enter your email address"
               />
             </div>
             <div className="grid gap-1">
@@ -68,11 +47,11 @@ export function LoginForm(_props: LoginFormProps) {
                 placeholder="Password"
                 type="password"
                 autoComplete="current-password"
-                disabled={loginMutation.isPending}
+                disabled={isSubmitting}
               />
             </div>
-            <Button disabled={loginMutation.isPending}>
-              {loginMutation.isPending && (
+            <Button disabled={isSubmitting}>
+              {isSubmitting && (
                 <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
               )}
               Sign In with Email
@@ -84,7 +63,7 @@ export function LoginForm(_props: LoginFormProps) {
               Dont have an account?
             </Link>
           </div>
-        </form>
+        </Form>
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <span className="w-full border-t" />
@@ -98,9 +77,9 @@ export function LoginForm(_props: LoginFormProps) {
         <FormLayout.SocialButton
           variant="outline"
           type="button"
-          disabled={loginMutation.isPending}
+          disabled={isSubmitting}
         >
-          {loginMutation.isPending ? (
+          {isSubmitting ? (
             <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
           ) : (
             <Icons.gitHub className="mr-2 h-4 w-4" />

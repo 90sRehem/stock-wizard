@@ -5,9 +5,23 @@ import { z } from "zod";
 export const taskSchema = z.object({
   id: z.string(),
   title: z.string(),
-  status: z.string(),
-  label: z.string(),
-  priority: z.string(),
+  status: z.union([
+    z.literal("todo"),
+    z.literal("done"),
+    z.literal("in progress"),
+    z.literal("backlog"),
+    z.literal("canceled"),
+  ]),
+  label: z.enum([
+    "bug",
+    "feature",
+    "enhancement",
+    "documentation",
+    "maintenance",
+  ] as const),
+  priority: z.enum(["low", "medium", "high"] as const),
+  createdAt: z.string().pipe(z.coerce.date()),
+  updatedAt: z.string().pipe(z.coerce.date()).nullable(),
 });
 
 export type Task = z.infer<typeof taskSchema>;

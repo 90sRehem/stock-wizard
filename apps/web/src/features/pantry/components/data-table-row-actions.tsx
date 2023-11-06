@@ -15,17 +15,27 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "ui";
-import { taskSchema } from "../api";
+import { Task, taskSchema } from "../api";
 import { labels } from "../constants";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
 }
 
-export function DataTableRowActions<TData>({
+function parseTask<TData>(row: Row<TData>): Task | null {
+  const task = taskSchema.safeParse(row.original);
+
+  if (task.success) {
+    return task.data;
+  }
+
+  return null;
+}
+
+export function DataTableRowActions<TData extends Row<unknown>>({
   row,
 }: DataTableRowActionsProps<TData>) {
-  const task = taskSchema.parse(row.original);
+  const task = parseTask(row.original);
 
   return (
     <DropdownMenu>
@@ -46,7 +56,7 @@ export function DataTableRowActions<TData>({
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>Labels</DropdownMenuSubTrigger>
           <DropdownMenuSubContent>
-            <DropdownMenuRadioGroup value={task.label}>
+            <DropdownMenuRadioGroup value={task?.label}>
               {labels.map((label) => (
                 <DropdownMenuRadioItem key={label.value} value={label.value}>
                   {label.label}
