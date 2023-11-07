@@ -1,38 +1,36 @@
-import { Navigate, Outlet, useRoutes } from "react-router-dom";
+import { Navigate, RouteObject } from "react-router-dom";
 import { Pantry } from "./pantry";
 import { Suspense } from "react";
+import { AddTask, addTaskAction } from "./add-task";
+import { Layout } from "./layout";
 
-function Layout() {
-  return (
-    <article>
-      <Suspense fallback={<div>Loading...</div>}>
-        <Outlet />
-      </Suspense>
-    </article>
-  );
-}
-
-export function PantryRoutes() {
-  const routes = useRoutes([
-    {
-      path: "/",
-      element: <Layout />,
-      children: [
-        {
-          index: true,
-          element: (
-            <Suspense fallback={<div>Loading Pantry...</div>}>
-              <Pantry />
-            </Suspense>
-          ),
-        },
-      ],
-    },
-    {
-      path: "/*",
-      element: <Navigate to="/" />,
-    },
-  ]);
-
-  return routes;
-}
+export const pantryRoutes: RouteObject[] = [
+  {
+    path: "pantry",
+    element: <Layout />,
+    children: [
+      {
+        index: true,
+        element: (
+          <Suspense fallback={<div>Loading Pantry...</div>}>
+            <Pantry />
+          </Suspense>
+        ),
+      },
+      {
+        path: "add-task",
+        id: "add-task",
+        action: addTaskAction,
+        element: (
+          <Suspense fallback={<div>Loading Add Task...</div>}>
+            <AddTask />
+          </Suspense>
+        ),
+      },
+    ],
+  },
+  {
+    path: "pantry/*",
+    element: <Navigate to="/" />,
+  },
+];

@@ -68,7 +68,7 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="space-y-4 p-4 border border-slate-500 rounded-md">
+    <div className="space-y-4 p-4 border border-slate-500 rounded-md bg-slate-50">
       <DataTableToolbar table={table} isLoading={isLoading} />
       <div className="rounded-md border border-slate-500">
         <Table>
@@ -77,7 +77,7 @@ export function DataTable<TData, TValue>({
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={header.id} className="bg-slate-200">
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -96,6 +96,7 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  className="hover:bg-slate-100 bg-white"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

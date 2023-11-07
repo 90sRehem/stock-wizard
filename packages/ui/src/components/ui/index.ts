@@ -4,6 +4,7 @@ export * from "./button";
 export * from "./checkbox";
 export * from "./command";
 export * from "./dropdown-menu";
+export * from "./dialog";
 export * from "./form";
 export * from "./icons";
 export * from "./input";

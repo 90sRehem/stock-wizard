@@ -2,7 +2,7 @@ import { authStore } from "@/features/auth";
 import { Dashboard, RouteLayout } from "@/features/misc";
 import { Profile } from "@/features/misc/routes/profile";
 import { Settings } from "@/features/misc/routes/settings";
-import { PantryRoutes } from "@/features/pantry/routes";
+import { pantryRoutes } from "@/features/pantry/routes";
 import { Navigate, redirect } from "react-router-dom";
 
 async function authLoader() {
@@ -22,8 +22,8 @@ export const protectedRoutes = [
       { index: true, element: <Dashboard /> },
       { path: "profile", element: <Profile /> },
       { path: "settings", element: <Settings /> },
-      { path: "pantry/*", element: <PantryRoutes /> },
       { path: "*", element: <Navigate to="." /> },
+      ...pantryRoutes,
     ],
   },
 ];
