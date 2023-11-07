@@ -11,7 +11,6 @@ export function Pantry() {
   const addTaskMutation = useAddTask();
 
   const handleAddTask = async () => {
-    console.log("clicked");
     try {
       await addTaskMutation.mutateAsync({
         id: crypto.randomUUID(),
@@ -41,9 +40,9 @@ export function Pantry() {
             <Link to="add-task">Add Task</Link>
           </Button>
         </div>
-        <Suspense fallback={<TasksTable.Skeleton />}>
-          <TasksTable />
-        </Suspense>
+        {/* <Suspense fallback={<TasksTable.Skeleton />}> */}
+        <TasksTable />
+        {/* </Suspense> */}
         <Outlet />
       </div>
     </>

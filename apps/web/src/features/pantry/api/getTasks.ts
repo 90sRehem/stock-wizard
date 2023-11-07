@@ -1,33 +1,56 @@
 import { api } from "@/lib/wretch";
 import { Task, taskSchema } from "./taskSchema";
-import { useQuery } from "@tanstack/react-query";
+import { QueryClient, useQuery } from "@tanstack/react-query";
 import { QueryConfig } from "@/lib";
 import z from "zod";
+import { LoaderFunctionArgs, defer } from "react-router-dom";
 
 const taskResponseSchema = z.array(taskSchema);
 
-type TaskResponse = z.infer<typeof taskResponseSchema>;
+export type TaskResponse = z.infer<typeof taskResponseSchema>;
 
-export async function getTasks() {
-  const response = await api.get("/tasks").res<Task[]>((res) => res.json());
+export async function getTasks(): Promise<TaskResponse> {
+  try {
+    const response = await api.get("/tasks").res<Task[]>((res) => res.json());
+    const tasks = taskResponseSchema.safeParse(response);
+    if (!tasks.success) {
+      throw new Error(tasks.error.message);
+    }
 
-  // the response is an array of tasks with crateAt and updatedAt as strings
-  // we need to convert them to dates using zod.transform
-  const tasks = taskResponseSchema.safeParse(response);
-  if (!tasks.success) {
-    throw new Error(tasks.error.message);
+    return tasks.data;
+  } catch (error) {
+    console.log("🚀 ~ file: getTasks.ts:26 ~ getTasks ~ error:", error);
+    return [];
   }
-
-  console.log("🚀 ~ file: getTasks.ts:15 ~ getTasks ~ tasks:", tasks);
-  return tasks.data;
 }
 
-function getTasksConfig() {
+function getTasksQuery() {
   return {
     queryKey: ["tasks"],
     queryFn: getTasks,
   };
 }
+
+export function tasksLoader(queryClient: QueryClient) {
+  return async (_config: Partial<LoaderFunctionArgs>) => {
+    const tasksQuery = getTasksQuery();
+    const queryData = queryClient.getQueryData<TaskResponse>(
+      tasksQuery.queryKey,
+    );
+
+    if (queryData) {
+      return queryData;
+    } else {
+      const tasks = (await tasksQuery.queryFn()) as TaskResponse;
+      // return defer({ tasks });
+      return tasks;
+    }
+  };
+}
+
+export type TaskLoaderData = Awaited<
+  ReturnType<ReturnType<typeof tasksLoader>>
+>;
 
 type UseTasksConfig = {
   config?: QueryConfig<typeof getTasks>;
@@ -35,7 +58,7 @@ type UseTasksConfig = {
 
 export function useTasks({ config }: UseTasksConfig = {}) {
   return useQuery({
-    ...getTasksConfig(),
+    ...getTasksQuery(),
     ...config,
   });
 }

@@ -58,7 +58,7 @@ export function AddTask() {
   const location = useLocation();
   const navigate = useNavigate();
   const submit = useSubmit();
-  // const open = location.pathname.includes("add-task");
+  const open = location.pathname.includes("add-task");
   const close = () => navigate("../");
 
   const form = useForm<TaskFormValues>({
@@ -67,18 +67,14 @@ export function AddTask() {
     mode: "onChange",
   });
 
-  const onSubmit = async (data, e) => {
-    console.log(
-      "🚀 ~ file: add-task.tsx:66 ~ onSubmit:",
-      e.currentTarget,
-      data,
-    );
-    trigger
-    submit(e.currentTarget);
+  const onSubmit = async (data: TaskFormValues) => {
+    submit(data, {
+      method: "post",
+    });
   };
 
   return (
-    <Dialog open onOpenChange={close}>
+    <Dialog open={open} onOpenChange={close}>
       <Dialog.Content className="sm:max-w-[425px]">
         <Dialog.Close onClick={close} />
         <Dialog.Header>

@@ -17,11 +17,17 @@ type UseAddTaskConfig = {
   config?: MutationConfig<typeof addTask>;
 };
 
+function addTaskMutation() {
+  return {
+    mutationKey: ["tasks"],
+    mutationFn: addTask,
+  };
+}
+
 export function useAddTask({ config }: UseAddTaskConfig = {}) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationKey: ["tasks"],
-    mutationFn: addTask,
+    ...addTaskMutation(),
     onMutate: async (variables) => {
       queryClient.cancelQueries({ queryKey: ["tasks"] });
     },
