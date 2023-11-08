@@ -1,10 +1,7 @@
 import { Navigate, RouteObject } from "react-router-dom";
 import { Pantry } from "./pantry";
-import { Suspense } from "react";
-import { AddTask, addTaskAction } from "./add-task";
+import { AddTask } from "./add-task";
 import { Layout } from "./layout";
-import { tasksLoader } from "../api";
-import { queryClient } from "@/lib";
 
 export const pantryRoutes: RouteObject[] = [
   {
@@ -13,23 +10,22 @@ export const pantryRoutes: RouteObject[] = [
     children: [
       {
         index: true,
-        loader: tasksLoader(queryClient),
-        element: (
-          <Suspense fallback={<div>Loading pantry...</div>}>
-            {" "}
-            <Pantry />{" "}
-          </Suspense>
-        ),
+        element: <Pantry />,
       },
       {
         path: "add-task",
         id: "add-task",
-        action: addTaskAction,
-        element: (
-          <Suspense fallback={<div>Loading Add Task...</div>}>
-            <AddTask />
-          </Suspense>
-        ),
+        element: <AddTask />,
+      },
+      {
+        path: "update-task/:id",
+        id: "update-task",
+        element: <div>update task</div>,
+      },
+      {
+        path: "remove-task/:id",
+        id: "remove-task",
+        element: <div>remove task</div>,
       },
     ],
   },

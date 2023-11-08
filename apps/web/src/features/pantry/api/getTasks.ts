@@ -39,11 +39,13 @@ export function tasksLoader(queryClient: QueryClient) {
     );
 
     if (queryData) {
+      console.log("🚀 ~ file: getTasks.ts:42 ~ return ~ queryData:", queryData);
       return queryData;
     } else {
       const tasks = (await tasksQuery.queryFn()) as TaskResponse;
-      // return defer({ tasks });
-      return tasks;
+      console.log("🚀 ~ file: getTasks.ts:46 ~ return ~ tasks:", tasks);
+      return defer({ tasks });
+      // return tasks;
     }
   };
 }

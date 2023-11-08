@@ -3,12 +3,12 @@ import { z } from "zod";
 // We're keeping a simple non-relational schema here.
 // IRL, you will have a schema for your data models.
 export const taskSchema = z.object({
-  id: z.string(),
-  title: z.string(),
+  id: z.string().uuid(),
+  title: z.string().min(2, "Title must be at least 2 characters long"),
   status: z.union([
     z.literal("todo"),
     z.literal("done"),
-    z.literal("in progress"),
+    z.literal("in-progress"),
     z.literal("backlog"),
     z.literal("canceled"),
   ]),

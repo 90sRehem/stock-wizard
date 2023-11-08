@@ -1,12 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
-import {
-  Form,
-  LoaderFunctionArgs,
-  useLocation,
-  useNavigate,
-  useSubmit,
-} from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   Button,
   Dialog,
@@ -23,19 +17,14 @@ import {
   SelectValue,
 } from "ui";
 import { z } from "zod";
+import { useAddTask } from "../api/addTask";
+import { taskSchema } from "../api";
 
-const taskFormSchema = z.object({
-  title: z
-    .string()
-    .min(2, {
-      message: "Title must be at least 2 characters.",
-    })
-    .optional(),
-  status: z
-    .enum(["backlog", "in-progress", "done", "todo", "canceled"])
-    .optional(),
-  label: z.enum(["bug", "feature", "documentation"]).optional(),
-  priority: z.enum(["high", "medium", "low"]).optional(),
+const taskFormSchema = taskSchema.pick({
+  title: true,
+  status: true,
+  label: true,
+  priority: true,
 });
 
 type TaskFormValues = z.infer<typeof taskFormSchema>;
@@ -47,19 +36,13 @@ const defaultValues: Partial<TaskFormValues> = {
   priority: undefined,
 };
 
-export async function addTaskAction({ request }: LoaderFunctionArgs) {
-  const formData = await request.formData();
-  const fields = Object.fromEntries(formData.entries());
-  console.log("🚀 ~ file: add-task.tsx:47 ~ addTaskAction ~ fields:", fields);
-  return fields;
-}
-
 export function AddTask() {
   const location = useLocation();
   const navigate = useNavigate();
-  const submit = useSubmit();
   const open = location.pathname.includes("add-task");
   const close = () => navigate("../");
+
+  const addTaskMutation = useAddTask();
 
   const form = useForm<TaskFormValues>({
     resolver: zodResolver(taskFormSchema),
@@ -68,9 +51,19 @@ export function AddTask() {
   });
 
   const onSubmit = async (data: TaskFormValues) => {
-    submit(data, {
-      method: "post",
-    });
+    try {
+      await addTaskMutation.mutateAsync({
+        id: crypto.randomUUID(),
+        createdAt: new Date(),
+        updatedAt: null,
+        label: data.label,
+        priority: data.priority,
+        status: data.status,
+        title: data.title,
+      });
+    } catch (error) {
+      console.log("🚀 ~ file: add-task.tsx:93 ~ onSubmit ~ error:", error);
+    }
   };
 
   return (
@@ -84,7 +77,7 @@ export function AddTask() {
           </Dialog.Description>
         </Dialog.Header>
         <FormProvider {...form}>
-          <Form
+          <form
             id="add-task"
             method="post"
             onSubmit={form.handleSubmit(onSubmit)}
@@ -192,7 +185,7 @@ export function AddTask() {
             <Dialog.Footer>
               <Button type="submit">Save changes</Button>
             </Dialog.Footer>
-          </Form>
+          </form>
         </FormProvider>
       </Dialog.Content>
     </Dialog>

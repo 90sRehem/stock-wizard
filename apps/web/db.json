@@ -22,6 +22,24 @@
       "title": "test",
       "createdAt": "2023-10-31T10:28:16.161Z",
       "updatedAt": "2023-10-31T10:28:16.161Z"
+    },
+    {
+      "label": "feature",
+      "priority": "low",
+      "status": "in-progress",
+      "title": "tarefa 1",
+      "id": "ed47c4a2-c00a-4d67-aa3b-9f77084c6140",
+      "createdAt": "2023-11-08T12:18:08.154Z",
+      "updatedAt": null
+    },
+    {
+      "id": "02b8756c-75b2-464a-8997-c95461d35669",
+      "createdAt": "2023-11-08T13:24:20.927Z",
+      "updatedAt": null,
+      "label": "feature",
+      "priority": "medium",
+      "status": "backlog",
+      "title": "tarefa 1"
     }
   ]
 }
