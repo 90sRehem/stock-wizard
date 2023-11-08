@@ -1,4 +1,4 @@
-import { Entity } from "../../core/entities/entity";
+import { Entity } from "@/core/entities/entity";
 import { UserSchema } from "../../schemas/user-schema"
 import { Guid } from "../../core/value-objects/guid";
 

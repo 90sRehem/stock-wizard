@@ -34,7 +34,6 @@ describe('User', () => {
     const newProps = { name: "Jane Doe" };
 
     user.update(newProps);
-    console.log("🚀 ~ file: user.spec.ts:35 ~ it ~ user:", user)
 
     expect(user.name).toEqual(newProps.name);
     expect(user.updatedAt).not.toBeNull();
