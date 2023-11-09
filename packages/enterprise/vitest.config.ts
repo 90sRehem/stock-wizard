@@ -13,5 +13,10 @@ export default defineConfig({
   },
   plugins: [
     tsConfigPaths(),
-  ]
+  ],
+  resolve: {
+    alias: {
+      "@": "/src",
+    }
+  }
 }); 

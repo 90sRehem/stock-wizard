@@ -1,14 +1,6 @@
-import { Entity } from "@/core/entities/entity";
-import { Guid } from "../../core/value-objects/guid";
-import { Password, passwordSchema } from "../value-objects/password";
 import { z } from "zod";
-import { Contract } from "@/core/validation/contract";
-
-// export type UserProps = {
-//   name: string;
-//   email: string;
-//   password: Password;
-// };
+import { passwordSchema } from "../value-objects";
+import { Contract, Entity, Guid } from "@/core";
 
 const userSchema = z.object({
   name: z.string().min(3, "O nome deve ter pelo menos 3 caracteres"),

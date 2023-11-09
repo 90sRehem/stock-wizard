@@ -1,5 +1,4 @@
-import { Contract } from "@/core/validation/contract";
-import { ValueObject } from "@/core/value-objects/value-objects";
+import { Contract, ValueObject } from "@/core";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 
