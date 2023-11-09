@@ -1,12 +1,14 @@
+import { Notifiable } from "../validation/notifiable";
 import { Guid } from "../value-objects/guid";
 
-export abstract class Entity<Props> {
+export abstract class Entity<Props> extends Notifiable {
   private _id: Guid;
   protected props: Props;
   private _createdAt: Date;
   private _updatedAt?: Date | null;
 
   protected constructor(props: Props, id?: Guid) {
+    super();
     this.props = props;
     this._id = id ?? Guid.create();
     this._createdAt = new Date();

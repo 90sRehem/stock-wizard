@@ -1,8 +1,11 @@
-export abstract class ValueObject<Props> {
-  protected readonly props: Props;
+import { Notifiable } from "../validation/notifiable";
+
+export abstract class ValueObject<Props> extends Notifiable {
+  protected props: Props;
 
   constructor(props: Props) {
-    this.props = Object.freeze(props);
+    super();
+    this.props = props;
   }
 
   public equals(vo?: ValueObject<Props>): boolean {
