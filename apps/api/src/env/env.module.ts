@@ -3,6 +3,6 @@ import { EnvService } from './env.service';
 
 @Module({
   providers: [EnvService],
-  exports: [EnvModule],
+  exports: [EnvService],
 })
 export class EnvModule { }

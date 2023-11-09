@@ -7,6 +7,7 @@ import { envSchema } from './env/env';
 import { DatabaseModule } from './database/database.module';
 import { PrismaService } from './database/prisma/prisma.service';
 import { AuthModule } from './auth/auth.module';
+import { CryptographyModule } from './cryptography/cryptography.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { AuthModule } from './auth/auth.module';
     }),
     DatabaseModule,
     AuthModule,
+    CryptographyModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
