@@ -1,11 +1,23 @@
 import { z } from "zod";
-import { passwordSchema } from "../value-objects";
 import { Contract, Entity, Guid } from "@/core";
 
 const userSchema = z.object({
   name: z.string().min(3, "O nome deve ter pelo menos 3 caracteres"),
   email: z.string().email("O email deve ser válido"),
-  password: passwordSchema,
+  password: z.string()
+    .min(6, 'A senha deve ter pelo menos 6 caracteres')
+    .refine((password) => /[a-z]/.test(password), {
+      message: 'A senha deve conter pelo menos uma letra minúscula',
+    })
+    .refine((password) => /[A-Z]/.test(password), {
+      message: 'A senha deve conter pelo menos uma letra maiúscula',
+    })
+    .refine((password) => /\d/.test(password), {
+      message: 'A senha deve conter pelo menos um número',
+    })
+    .refine((password) => /[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]/.test(password), {
+      message: 'A senha deve conter pelo menos um caractere especial',
+    })
 });
 
 export type UserProps = z.infer<typeof userSchema>;
@@ -22,7 +34,7 @@ export class User extends Entity<UserProps> {
   }
 
   public get password() {
-    return this.props.password.value;
+    return this.props.password;
   }
 
   public get name() {

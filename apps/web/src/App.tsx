@@ -4,6 +4,7 @@ import { Toaster } from "sonner";
 import { router } from "./routes/router";
 import { queryClient } from "./lib/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
 function App() {
   return (
     <QueryClientProvider client={queryClient}>

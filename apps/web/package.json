@@ -23,6 +23,7 @@
     "redaxios": "^0.5.1",
     "sonner": "^1.0.3",
     "ui": "workspace:*",
+    "enterprise": "workspace:*",
     "wretch": "^2.7.0",
     "zod": "^3.22.4",
     "zustand": "^4.4.4"

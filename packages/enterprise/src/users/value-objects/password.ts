@@ -28,19 +28,25 @@ export class Password extends ValueObject<PasswordProps> {
     this.addNotifications(new Contract(passwordSchema, props).notifications);
 
     if (this.isValid()) {
-      this.hashPassword(props.value);
+      this.hash(props.value);
     }
   }
   get value(): string {
     return this.props.value;
   }
 
-  private hashPassword(password: string): void {
+  private hash(password: string): void {
     const hashed = bcrypt.hashSync(password, 8);
     this.props.value = hashed;
   }
 
-  public comparePassword(password: string): Promise<boolean> {
-    return bcrypt.compare(password, this.props.value);
+  public async compare(password: string): Promise<boolean> {
+    console.log("🚀 ~ file: password.ts:44 ~ Password ~ compare ~ password:", password)
+    console.log("🚀 ~ file: password.ts:45 ~ Password ~ compare ~ this.props.value:", this.props.value)
+    const result = await bcrypt.compare(password, this.props.value);
+    console.log("🚀 ~ file: password.ts:47 ~ Password ~ compare ~ result:", result)
+
+
+    return result
   }
 }

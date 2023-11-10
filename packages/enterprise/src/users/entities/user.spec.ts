@@ -1,12 +1,11 @@
 import { Guid } from '@/core/value-objects/guid';
 import { User, type UserProps } from './user';
-import { Password } from '../value-objects/password';
 
 const id = new Guid("123456");
 const props: UserProps = {
   name: "John Doe",
   email: "johndoe@email.com",
-  password: new Password({ value: "@T3ste" })
+  password: "@T3ste"
 };
 
 describe('User', () => {

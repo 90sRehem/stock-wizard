@@ -28,7 +28,7 @@ describe('Password', () => {
 
   it('should be able to compare a password', async () => {
     const password = new Password({ value: "@t3sTe" });
-    const isValid = await password.comparePassword("@t3sTe");
+    const isValid = await password.compare("@t3sTe");
     expect(isValid).toBe(true);
   });
 });

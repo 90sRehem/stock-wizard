@@ -8,6 +8,7 @@ import { DatabaseModule } from './database/database.module';
 import { PrismaService } from './database/prisma/prisma.service';
 import { AuthModule } from './auth/auth.module';
 import { CryptographyModule } from './cryptography/cryptography.module';
+import { HttpModule } from './http/http.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { CryptographyModule } from './cryptography/cryptography.module';
     DatabaseModule,
     AuthModule,
     CryptographyModule,
+    HttpModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
