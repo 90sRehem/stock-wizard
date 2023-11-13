@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { Contract, Entity, Guid } from "@/core";
 
-const userSchema = z.object({
+export const userSchema = z.object({
   name: z.string().min(3, "O nome deve ter pelo menos 3 caracteres"),
   email: z.string().email("O email deve ser válido"),
   password: z.string()

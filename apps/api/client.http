@@ -8,3 +8,14 @@ Content-Type: application/json
   "email": "johndoe@gmail.com",
   "password": "123456"
 }
+###
+
+# @name create user
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+  "name": "John quin",
+  "email": "johnquin@email.com",
+  "password": "123456"
+}

@@ -1,3 +1,4 @@
+import { Injectable } from '@nestjs/common';
 import {
   AuthenticateUserUseCase,
   Encrypter,
@@ -5,6 +6,7 @@ import {
   UserRepository,
 } from 'enterprise';
 
+@Injectable()
 export class NestAuthenticateUserUseCase extends AuthenticateUserUseCase {
   constructor(
     userRepository: UserRepository,

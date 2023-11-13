@@ -4,6 +4,7 @@ import { Either, failure } from "@/core";
 import { UserAlreadyExistsError } from "./errors";
 import { User } from "../entities";
 import { success } from "dist";
+import { ValidationError } from "./errors/validation-erros";
 
 type CreateUserUseCaseRequest = {
   name: string;
@@ -32,6 +33,10 @@ export class CreateUserUseCase {
       email,
       password: passwordHash,
     });
+
+    if (user.isInvalid()) {
+      return failure(new ValidationError(user.notifications.map((notification) => notification.message)));
+    }
 
     await this.userRepository.create(user);
 

@@ -41,12 +41,7 @@ export class Password extends ValueObject<PasswordProps> {
   }
 
   public async compare(password: string): Promise<boolean> {
-    console.log("🚀 ~ file: password.ts:44 ~ Password ~ compare ~ password:", password)
-    console.log("🚀 ~ file: password.ts:45 ~ Password ~ compare ~ this.props.value:", this.props.value)
     const result = await bcrypt.compare(password, this.props.value);
-    console.log("🚀 ~ file: password.ts:47 ~ Password ~ compare ~ result:", result)
-
-
     return result
   }
 }

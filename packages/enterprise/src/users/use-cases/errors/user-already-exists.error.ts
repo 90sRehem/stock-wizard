@@ -1,4 +1,4 @@
-import { UseCaseError } from "dist";
+import { UseCaseError } from "@/core";
 
 export class UserAlreadyExistsError extends Error implements UseCaseError {
   constructor(identifier: string) {

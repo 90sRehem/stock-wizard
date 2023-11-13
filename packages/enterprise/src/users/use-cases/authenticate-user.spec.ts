@@ -1,17 +1,17 @@
-import { inMemoryUserRepository } from "test/repositories/in-memory-user-repository";
+import { InMemoryUserRepository } from "@/test/repositories/in-memory-user-repository";
 import { AuthenticateUserUseCase } from "./authenticate-user";
-import { FakeEncrypter } from "test/cryptography/fake-encrypter";
-import { UserFactory } from "test/factories/user-factory";
-import { FakeHasher } from "test/cryptography/fake-hasher";
+import { FakeEncrypter } from "@/test/cryptography/fake-encrypter";
+import { UserFactory } from "@/test/factories/user-factory";
+import { FakeHasher } from "@/test/cryptography/fake-hasher";
 
 let sut: AuthenticateUserUseCase;
-let repository: inMemoryUserRepository;
+let repository: InMemoryUserRepository;
 let encrypter: FakeEncrypter;
 let hasher: FakeHasher;
 
 describe('AuthenticateUser tests', () => {
   beforeEach(() => {
-    repository = new inMemoryUserRepository();
+    repository = new InMemoryUserRepository();
     encrypter = new FakeEncrypter();
     hasher = new FakeHasher();
     sut = new AuthenticateUserUseCase(repository, hasher, encrypter);
