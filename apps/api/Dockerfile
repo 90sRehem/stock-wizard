@@ -10,7 +10,7 @@ ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
 
 COPY package.json ./
-
+COPY pnpm-lock.yaml ./
 
 RUN pnpm install
 
