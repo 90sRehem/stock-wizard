@@ -1,0 +1,21 @@
+# @name health check
+GET http://localhost:3010
+###
+
+# @name list-users
+# @description List all users
+
+GET http://localhost:3000/users
+Content-Type: application/json
+
+###
+
+# @name authenticate
+# @description Authenticate user
+POST http://localhost:3000/session
+Content-Type: application/json
+
+{
+  "email": "jonathan.rehem@gmail.com",
+    "password": "123456"
+}
