@@ -44,7 +44,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         transport: Transport.TCP,
         options: {
           host: 'localhost',
-          port: 3010,
+          port: 3001,
         },
       },
     ]),
@@ -62,4 +62,4 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
   ],
   controllers: [SessionController],
 })
-export class AppModule {}
+export class AppModule { }
