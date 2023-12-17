@@ -13,6 +13,17 @@ export class PrismaUserMapper {
     );
   }
 
+  static toHttp(user: User) {
+    return {
+      id: user.id.toString(),
+      email: user.email,
+      name: user.name,
+      password: user.password,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    };
+  }
+
   static toPersistence(user: User): Prisma.UserUncheckedCreateInput {
     return {
       id: user.id.toString(),

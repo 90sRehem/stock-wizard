@@ -1,12 +1,8 @@
 import {
-  ArgumentsHost,
   BadRequestException,
   Body,
-  Catch,
   ConflictException,
   Controller,
-  ExceptionFilter,
-  HttpException,
   UseFilters,
   UsePipes,
 } from '@nestjs/common';
@@ -14,14 +10,8 @@ import { NestCreateUserService } from '../use-cases/nest-create-user.service';
 import { ZodValidationPipe } from '../pipes/zod-validation.pipe.';
 import { z } from 'zod';
 import { UserAlreadyExistsError } from 'enterprise';
-import { MessagePattern, RpcException } from '@nestjs/microservices';
-
-@Catch(HttpException)
-export class RpcValidationFilter implements ExceptionFilter {
-  catch(exception: HttpException, _host: ArgumentsHost) {
-    return new RpcException(exception.getResponse());
-  }
-}
+import { MessagePattern } from '@nestjs/microservices';
+import { RpcValidationFilter } from '../filters/rpc-validation.filter';
 
 const createUserSchema = z.object({
   name: z.string().min(3),
@@ -45,6 +35,10 @@ export class CreateUserController {
 
     if (result.isFailure()) {
       const error = result.value;
+      console.log(
+        '🚀 ~ file: create-user.controller.ts:38 ~ CreateUserController ~ handle ~ error:',
+        error,
+      );
       switch (error.constructor) {
         case UserAlreadyExistsError:
           throw new ConflictException(error.message);
