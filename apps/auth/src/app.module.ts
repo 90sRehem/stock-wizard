@@ -13,6 +13,7 @@ import { JwtEncrypter } from './services/jwt-encrypter.service';
 import { SessionController } from './controllers/session.controller';
 import { AppService } from '@/services/app.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
@@ -33,7 +34,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
           publicKey: Buffer.from(publicKey, 'base64'),
           signOptions: {
             algorithm: 'RS256',
-            expiresIn: '1d',
+            expiresIn: '15min',
           },
         };
       },
@@ -50,11 +51,13 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     ]),
     EnvModule,
     PassportModule,
+    DatabaseModule,
   ],
   providers: [
     JwtStrategy,
     EnvService,
     AppService,
+    DatabaseModule,
     { provide: APP_GUARD, useClass: JwtStrategy },
     { provide: Encrypter, useClass: JwtEncrypter },
     { provide: HashGenerator, useClass: BCryptHasher },

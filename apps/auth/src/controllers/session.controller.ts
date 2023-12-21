@@ -12,6 +12,7 @@ import {
 import { z } from 'zod';
 import { AppService } from '@/services/app.service';
 import { MessagePattern, RpcException } from '@nestjs/microservices';
+import { Public } from '@/decorators/public.decorator';
 
 @Catch(HttpException)
 export class RpcValidationFilter implements ExceptionFilter {
@@ -57,6 +58,16 @@ export class SessionController {
   @UseFilters(RpcValidationFilter)
   async verify(@Body() { authorization }: VerifyDTO) {
     const response = await this.appService.verify(authorization);
+
+    return response;
+  }
+
+  @MessagePattern({ cmd: 'refresh' })
+  @UseFilters(RpcValidationFilter)
+  @UsePipes(verifyValidationPipe)
+  @Public()
+  async refresh(@Body() { authorization }: VerifyDTO) {
+    const response = await this.appService.refreshToken(authorization);
 
     return response;
   }
