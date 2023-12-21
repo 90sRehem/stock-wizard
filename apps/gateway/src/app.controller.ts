@@ -89,4 +89,25 @@ export class AppController {
 
     return response;
   }
+
+  @Post('session/refresh')
+  async refreshToken(@Body() { authorization }: { authorization: string }) {
+    const pattern = { cmd: 'refresh' };
+    const payload = { authorization };
+    const response = await lastValueFrom(
+      this.authService.send(pattern, payload),
+    );
+
+    if (response.error) {
+      throw new HttpException(
+        {
+          message: response.error.message,
+          errors: response.error.errors,
+        },
+        response.error.statusCode,
+      );
+    }
+
+    return response;
+  }
 }
